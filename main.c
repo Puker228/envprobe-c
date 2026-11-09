@@ -1,6 +1,7 @@
+#include <stddef.h>
 #include <stdio.h>
 
-char *print_os(void) {
+const char *print_os(void) {
 #ifdef __APPLE__
   return "apple";
 #elif __WINDOWS__
@@ -12,24 +13,19 @@ char *print_os(void) {
 #endif
 }
 
-char *print_arch(void) {
-#ifdef __arm__
-  return "arm";
-#elif __amd64__
-  return "amd64";
-#elif __x86_64__
+const char *print_arch(void) {
+#if defined(__aarch64__) || defined(__arm64__)
+  return "aarch64";
+#elif defined(__x86_64__)
   return "x86_64";
-#elif __aarch64__
+#elif defined(__arm__)
   return "arm";
 #else
-  return "undef";
+  return "unknown";
 #endif
 }
 
-int pointer_size(void) {
-  int *pointer;
-  return sizeof(pointer);
-}
+size_t pointer_size(void) { return sizeof(void *); }
 
 int pointer_width(int pointer_size) { return pointer_size * 8; }
 
